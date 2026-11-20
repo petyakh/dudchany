@@ -1,0 +1,40 @@
+content:
+  - name: blog
+    label: Блог
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Заголовок
+        type: string
+      - name: description
+        label: Опис
+        type: text
+        required: false
+      - name: pubDate
+        label: Дата публікації
+        type: date
+      - name: updatedDate
+        label: Дата оновлення
+        type: date
+        required: false
+      - name: author
+        label: Автор
+        type: string
+        default: Mixa
+      - name: category
+        label: Категорія
+        type: string
+        default: Uncategorized
+      - name: draft
+        label: Чернетка
+        type: boolean
+        default: false
+      - name: body
+        label: Текст
+        type: rich-text
+
+media:
+  input: public/images
+  output: /images
