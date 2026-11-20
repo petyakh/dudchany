@@ -1,0 +1,42 @@
+---
+import { site, ui, withBase } from '../config';
+
+const path = Astro.url.pathname;
+const items = site.nav.map((item) => {
+  const href = withBase(item.href);
+  return { ...item, href, current: path === href };
+});
+---
+
+<header id="masthead" class="site-header" role="banner">
+  <div class="site-branding">
+    <h1 class="site-title"><a href={withBase()} title={site.title} rel="home">{site.title}</a></h1>
+    <h2 class="site-description">{site.description}</h2>
+  </div>
+
+  <nav id="nav" class="site-navigation main-navigation" role="navigation">
+    <h1 class="assistive-text screen-reader-text">{ui.menu}</h1>
+    <div class="assistive-text skip-link screen-reader-text">
+      <a href="#content" title={ui.skip}>{ui.skip}</a>
+    </div>
+    <button class="menu-toggle" type="button" aria-controls="menu" aria-expanded="false">{ui.menu}</button>
+    <div class="menu" id="menu">
+      <ul>
+        {items.map((item) => (
+          <li>
+            <a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('#nav');
+  const toggle = nav?.querySelector<HTMLButtonElement>('.menu-toggle');
+  toggle?.addEventListener('click', () => {
+    const open = nav!.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

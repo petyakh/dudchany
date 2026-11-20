@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { excerptHtml } from '../lib/excerpt';
+
+export async function getStaticPaths() {
+  const PAGE_SIZE = 10;
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
+  const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const n = i + 2;
+    return {
+      params: { n: String(n) },
+      props: {
+        posts: posts.slice((n - 1) * PAGE_SIZE, n * PAGE_SIZE),
+        currentPage: n,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' });
+---
+
+<BaseLayout title={`Блог — стор. ${currentPage}`}>
+  {posts.map((post) => (
+    <article class="post hentry">
+      <header class="entry-header">
+        <div class="entry-meta">
+          <a href={`/${post.id}.html`} rel="bookmark">
+            <time class="entry-date" datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          </a>
+        </div>
+        <h1 class="entry-title"><a href={`/${post.id}.html`} rel="bookmark">{post.data.title}</a></h1>
+      </header>
+      <div class="entry-summary" set:html={excerptHtml(post.body ?? '')} />
+      <p><a href={`/${post.id}.html`}>Читати далі &rarr;</a></p>
+    </article>
+  ))}
+
+  <nav class="pagination" aria-label="Навігація по сторінках">
+    <a href={currentPage === 2 ? '/' : `/page-${currentPage - 1}.html`} rel="prev">&larr; Новіші</a>
+    <span class="pagination-current">Сторінка {currentPage} з {totalPages}</span>
+    {currentPage < totalPages && <a href={`/page-${currentPage + 1}.html`} rel="next">Старіші &rarr;</a>}
+  </nav>
+</BaseLayout>

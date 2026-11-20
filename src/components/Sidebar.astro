@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import { site, ui, withBase } from '../config';
+
+const recent = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+---
+
+<div id="secondary" class="widget-area" role="complementary">
+  <aside class="widget widget_search">
+    <!-- Статичний сайт: пошук делегуємо DuckDuckGo з обмеженням по сайту -->
+    <form method="get" id="searchform" action="https://duckduckgo.com/" role="search">
+      <label for="s" class="assistive-text screen-reader-text">{ui.search}</label>
+      <input type="text" class="field" name="q" id="s" placeholder={ui.searchPlaceholder} />
+      <input type="hidden" name="sites" value={new URL(withBase(), Astro.site).host + withBase().replace(/\/$/, '')} />
+      <input type="submit" class="submit" id="searchsubmit" value={ui.search} />
+    </form>
+  </aside>
+
+  <aside class="widget widget_recent_entries">
+    <h1 class="widget-title">{ui.recentPosts}</h1>
+    <ul>
+      {recent.map((post) => (
+        <li><a href={`/${post.id}.html`}>{post.data.title}</a></li>
+      ))}
+    </ul>
+  </aside>
+</div>

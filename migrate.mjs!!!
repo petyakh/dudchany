@@ -1,0 +1,52 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Вкажи шлях до папки з твоїми постами
+const postsDir = path.join(process.cwd(), 'src/content/blog');
+
+// Читаємо всі файли в папці
+const files = fs.readdirSync(postsDir);
+
+files.forEach(file => {
+  // Працюємо тільки з .md файлами
+  if (!file.endsWith('.md')) return;
+
+  // Шукаємо файли формату РРРР-ММ-ДД-назва.md
+  const match = file.match(/^(\d{4}-\d{2}-\d{2})-(.+\.md)$/);
+  
+  if (match) {
+    const dateStr = match[1];      // Наприклад: 2023-10-25
+    const newFilename = match[2];  // Наприклад: my-post.md
+    
+    const oldPath = path.join(postsDir, file);
+    const newPath = path.join(postsDir, newFilename);
+
+    let content = fs.readFileSync(oldPath, 'utf8');
+
+    // Перевіряємо, чи є Front Matter (починається з ---)
+    if (content.startsWith('---')) {
+      const endOfFrontMatter = content.indexOf('---', 3);
+      
+      if (endOfFrontMatter !== -1) {
+        const frontMatter = content.substring(3, endOfFrontMatter);
+        const body = content.substring(endOfFrontMatter);
+
+        // Якщо pubDate ще немає, додаємо його
+        if (!frontMatter.includes('pubDate:')) {
+          const newFrontMatter = `---${frontMatter}pubDate: ${dateStr}\n`;
+          content = newFrontMatter + body;
+        }
+      }
+    }
+
+    // Записуємо оновлений файл з новою назвою (без дати)
+    fs.writeFileSync(newPath, content, 'utf8');
+    
+    // Видаляємо старий файл
+    fs.unlinkSync(oldPath);
+    
+    console.log(`✅ Оновлено: ${file} -> ${newFilename}`);
+  }
+});
+
+console.log('🎉 Міграцію дат завершено!');

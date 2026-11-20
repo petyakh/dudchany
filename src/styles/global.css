@@ -1,141 +1,315 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+/* Astro-порт теми Misty Lake (Automattic, GPL v2+).
+   Кольори, відступи та типографіка збережені; CSS переписано на змінні та сучасні можливості. */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
-}
-body {
-	font-family: var(--font-atkinson);
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
-}
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
-}
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
-a {
-	color: var(--accent);
-}
-a:hover {
-	color: var(--accent);
-}
-p {
-	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
-}
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
-}
-pre > code {
-	all: unset;
-}
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
-}
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
-}
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+  --green: #265e15;
+  --green-hover: #588f43;
+  --text: #444;
+  --muted: #888;
+  --line: rgba(0, 0, 0, 0.1);
+  --page-bg: #f9f9f0;
+  --panel: #f3f3eb;
+  --panel-alt: #f1f1e9;
+  --panel-soft: #f8f8f3;
+  --double: 4px double var(--line);
+  --sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --serif: 'Noto Serif', 'Droid Serif', Georgia, 'Times New Roman', serif;
+  --bp: 37.5em;
 }
 
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+html {
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+article, aside, figure, figcaption, footer, header, nav, section { display: block; }
+:where(h1, h2, h3, h4, h5, h6) { font-size: 100%; font-weight: inherit; clear: both; }
+:where(ol, ul) { list-style: none; }
+table { border-collapse: separate; border-spacing: 0; margin-bottom: 1.5em; width: 100%; }
+caption, th, td { font-weight: normal; text-align: left; }
+th { font-weight: bold; }
+img { border: 0; }
+a:focus { outline: thin dotted; }
+a:hover, a:active { outline: 0; }
+
+/* ---------- Global ---------- */
+body {
+  background: #fff;
+  border-top: 5px solid var(--green);
+  color: var(--text);
+  font: 400 1rem / 1.5 var(--sans);
+}
+button, input, select, textarea { color: var(--text); font: inherit; vertical-align: baseline; }
+
+hr { background-color: #ccc; border: 0; height: 1px; margin-bottom: 1.5em; }
+p { margin-bottom: 1.5em; }
+ul, ol { margin: 0 0 1.5em 3em; }
+ul { list-style: disc; }
+ol { list-style: decimal; }
+ul ul, ol ol, ul ol, ol ul { margin-bottom: 0; margin-left: 1.5em; }
+dt { font-weight: bold; }
+dd { margin: 0 1.5em 1.5em; }
+b, strong { font-weight: bold; }
+dfn, cite, em, i { font-style: italic; }
+blockquote { margin: 0 1.5em; }
+address { margin: 0 0 1.5em; }
+pre {
+  background: var(--panel-alt);
+  font: 0.875rem / 1.6 'Courier 10 Pitch', Courier, monospace;
+  margin-bottom: 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1.6em;
+}
+code, kbd, tt, var { font: 14px Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace; }
+abbr, acronym { border-bottom: 1px dotted #666; cursor: help; }
+mark, ins { background: #fff9c0; text-decoration: none; }
+sup, sub { font-size: 75%; height: 0; line-height: 0; position: relative; vertical-align: baseline; }
+sup { bottom: 1ex; }
+sub { top: 0.5ex; }
+small { font-size: 75%; }
+big { font-size: 125%; }
+embed, iframe, object { max-width: 100%; }
+
+/* Форми */
+button,
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
+  background: var(--panel-alt);
+  border: 1px solid #ccc;
+  border-color: #ccc #ccc #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 15px 17px rgba(255, 255, 255, 0.5),
+    inset 0 -5px 12px rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  font-size: 0.8125rem;
+  line-height: 1;
+  padding: 1em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+button:hover,
+input[type='button']:hover,
+input[type='reset']:hover,
+input[type='submit']:hover {
+  border-color: #ccc #bbb #aaa;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 15px 17px rgba(255, 255, 255, 0.8),
+    inset 0 -5px 12px rgba(0, 0, 0, 0.02);
+}
+button:active,
+input[type='submit']:active {
+  border-color: #aaa #bbb #bbb;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+input[type='text'],
+input[type='email'],
+textarea {
+  appearance: none;
+  background: var(--page-bg);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  color: #999;
+  padding: 0.8em 0.5em;
+  width: 100%;
+}
+input[type='text']:focus,
+input[type='email']:focus,
+textarea:focus { background: #fcfcfc; color: var(--text); }
+textarea { font-size: 0.875rem; overflow: auto; padding: 0.8em; vertical-align: top; width: 98%; }
+
+/* Посилання */
+a, a:visited { color: var(--green); text-decoration: none; }
+a:hover, a:focus, a:active { color: var(--green-hover); }
+
+/* Лише для скрінрідерів */
+.screen-reader-text,
+.assistive-text {
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  position: absolute !important;
+  width: 1px;
+}
+
+/* Вирівнювання */
+.alignleft { margin-right: 1.5em; }
+.alignright { margin-left: 1.5em; }
+.aligncenter { clear: both; display: block; margin: 0 auto; }
+
+/* Плавні переходи */
+.site * { transition: opacity 0.3s linear; }
+.site a { transition: color 0.3s linear, background-color 0.3s linear; }
+
+/* Заголовки — з засічками */
+.site-title, .entry-title, .page-title, .widget-title,
+.entry-content :is(h1, h2, h3, h4, h5, h6, blockquote) { font-family: var(--serif); }
+
+/* ---------- Структура ---------- */
+.site { background: #fff; padding: 0 0.8em; }
+
+/* ---------- Шапка ---------- */
+.site-branding { margin-bottom: 1.5em; }
+.site-title { font-size: 2.3125rem; }
+.site-description { color: var(--muted); font-size: 0.875rem; }
+.header-image { margin: 0 0 1.5em; }
+
+/* ---------- Меню ---------- */
+.main-navigation { display: block; width: 100%; }
+.menu-toggle {
+  background: var(--panel-alt);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--muted);
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin: 1.5em 0;
+  padding: 1em 0;
+  text-align: center;
+  text-shadow: none;
+  width: 100%;
+}
+.main-navigation .menu { background: var(--panel-soft); display: none; margin: -1.5em 0 1.5em; }
+.main-navigation.is-open .menu { display: block; }
+.main-navigation ul { list-style: none; margin: 0; }
+.main-navigation li {
+  border-bottom: 1px solid var(--line);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.8em 0;
+}
+.main-navigation li a { color: var(--muted); display: block; max-width: 100%; padding: 0.5em 1.5em; }
+
+/* ---------- Контент ---------- */
+.hentry { border-bottom: var(--double); margin: 0 0 1.5em; padding-bottom: 1.5em; }
+.hentry:last-of-type { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.entry-meta { clear: both; font-size: 0.6875rem; }
+.entry-header .entry-meta { letter-spacing: 0.05em; margin-bottom: 1em; text-transform: uppercase; }
+.entry-meta, .entry-date { color: var(--muted); }
+.byline { display: none; }
+.single .byline { display: inline; }
+.entry-title { font-size: 1.4375rem; line-height: 1.1em; }
+.entry-title a { border: 0; }
+.entry-content, .entry-summary { font-size: 0.875rem; line-height: 1.714; margin: 1.5em 0 0; }
+.entry-content :is(h1, h2, h3, h4, h5, h6) { margin-bottom: 0.8em; }
+.entry-content h1 { font-size: 1.375rem; }
+.entry-content h2 { font-size: 1.25rem; }
+.entry-content h3 { font-size: 1.125rem; }
+.entry-content h4 { font-size: 1rem; }
+.entry-content h5 { font-size: 0.875rem; }
+.entry-content h6 { font-size: 0.75rem; margin-bottom: 1.5em; }
+.entry-content th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.615em;
+  padding: 0.462em 1.154em;
+  text-transform: uppercase;
+}
+.entry-content td { border-top: var(--double); padding: 0.462em 1.154em; }
+.entry-content blockquote {
+  border-left: var(--double);
+  color: var(--muted);
+  font-style: italic;
+  margin: 0 1.5em;
+  padding-left: 1.5em;
+}
+
+/* ---------- Медіа ---------- */
+.header-image img,
+.entry-content img { border: var(--double); height: auto; max-width: 100%; }
+p img, .wp-caption { margin-top: 0.5em; }
+img.aligncenter, img.alignleft, img.alignright, img.alignnone { margin-bottom: 1.5em; }
+.wp-caption { max-width: 100%; }
+.wp-caption:is(.aligncenter, .alignleft, .alignright, .alignnone) { margin-bottom: 1.5em; }
+.wp-caption img { display: inline-block; margin: 1.2% auto 0; max-width: 98%; }
+.wp-caption-text { color: var(--muted); font-size: 0.75rem; text-align: center; }
+.wp-caption .wp-caption-text { margin: 0.8075em 0; }
+
+/* ---------- Навігація по записах ---------- */
+.site-content .site-navigation { display: flex; justify-content: space-between; margin: 1.5em 0 0; overflow: hidden; }
+.site-content .nav-previous { width: 50%; }
+.site-content .nav-next { margin-left: auto; text-align: right; width: 50%; }
+.site-content .site-navigation a { font-size: 0.75rem; }
+
+/* ---------- Віджети ---------- */
+.widget { background: var(--panel); font-size: 0.75rem; margin: 0 0 1.5em; padding: 1.5em; }
+.widget-title { font-size: 0.875rem; margin-bottom: 0.8em; }
+.widget-title, .widget-title a { color: var(--text); }
+.widget ul { list-style: none; margin: 0; }
+.widget ul li { border-bottom: 1px solid var(--line); margin: 0.5em 0; padding: 0 0 0.5em; }
+#searchsubmit { display: none; }
+
+/* ---------- Футер ---------- */
+.site-info { color: var(--muted); font-size: 0.6875rem; margin: 1.5em 0; text-align: center; }
+
+/* ---------- ≥ 600px: десктопний макет ---------- */
+@media screen and (min-width: 37.5em) {
+  body { background: var(--page-bg); }
+
+  .site { background: transparent; margin: 0 auto; max-width: 960px; overflow: hidden; }
+  .site-main {
+    background: #fff;
+    border: 1px solid var(--line);
+    clear: both;
+    column-gap: 4.5%;
+    display: grid;
+    grid-template-columns: 1fr 25%;
+    padding: 2.5em;
+    position: relative;
+    z-index: 4;
+  }
+  .site-main > * { min-width: 0; }
+  .header-image { grid-column: 1 / -1; margin: -1.5em -1.5em 1.5em; text-align: center; }
+  .header-image img { border: 0; display: block; }
+  #secondary { align-self: start; overflow: hidden; }
+
+  /* Верхнє меню-«вкладки» */
+  .main-navigation { position: relative; z-index: 9; }
+  .menu-toggle { display: none; }
+  .main-navigation .menu { background: none; display: block; margin: 0; }
+  .main-navigation ul { display: flex; position: relative; }
+  .main-navigation li { border: 0; margin: 0 -0.1em -0.06em 0; padding: 0; }
+  .main-navigation li a {
+    background: var(--panel-alt);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    margin-top: 0.5em;
+    padding: 0.8em;
+  }
+  .main-navigation li:hover > a { background: #fff; color: var(--text); }
+  .main-navigation li a[aria-current='page'] {
+    background: #fff;
+    border-bottom-color: #fff;
+    color: var(--text);
+  }
+
+  .hentry { margin-bottom: 3.5em; }
+
+  /* Приглушені елементи, що «прокидаються» при наведенні */
+  .widget-area, .entry-meta { opacity: 0.6; }
+  .header-image img, .entry-content img { opacity: 0.9; }
+  .widget { margin-bottom: 2.5em; }
+  .entry-meta:hover, .widget-area:hover,
+  .header-image img:hover, .entry-content img:hover { opacity: 1; }
+
+  .site-footer { clear: both; width: 100%; }
+  .alignleft { float: left; }
+  .alignright { float: right; }
+}
+
+/* ---------- ≥ 960px ---------- */
+@media screen and (min-width: 60em) {
+  body .site { margin-block: 1.5em; }
 }
